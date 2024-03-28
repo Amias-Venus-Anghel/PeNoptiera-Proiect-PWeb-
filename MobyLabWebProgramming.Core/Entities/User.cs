@@ -12,6 +12,9 @@ public class User : BaseEntity
     public string Password { get; set; } = default!;
     public UserRoleEnum Role { get; set; } = default!;
 
+
+    public ShoppingCart ShoppingCart { get; set; } = default!;
+
     /// <summary>
     /// References to other entities such as this are used to automatically fetch correlated data, this is called a navigation property.
     /// Collection such as this can be used for Many-To-One or Many-To-Many relations.
@@ -20,4 +23,6 @@ public class User : BaseEntity
     public ICollection<UserFile> UserFiles { get; set; } = default!;
     // Producer products
     public ICollection<Product> Products { get; set; } = default!;
+    public ICollection<Order> Orders { get; set; } = default!;
 }
+
