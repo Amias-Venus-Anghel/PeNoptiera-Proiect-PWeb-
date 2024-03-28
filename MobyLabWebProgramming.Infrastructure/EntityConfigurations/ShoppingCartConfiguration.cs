@@ -27,5 +27,6 @@ public class ShoppingCartConfiguration : IEntityTypeConfiguration<ShoppingCart>
             .HasForeignKey<ShoppingCart>(e => e.ClientId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(e => e.ClientId).IsUnique();
     }
 }

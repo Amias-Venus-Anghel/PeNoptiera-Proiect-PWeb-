@@ -11,7 +11,7 @@ public class Product: BaseEntity
 {
     public string Name { get; set; } = default!;
     public float Price { get; set; } = default!;
-    public string Description { get; set; }
+    public string Description { get; set; } = default!;
     public ProductTypeEnum ProductType { get; set; } = default!;
 
     public Guid ProducerId { get; set; }

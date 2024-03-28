@@ -31,11 +31,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(e => e.UpdatedAt)
             .IsRequired();
 
-        builder.HasOne(e => e.Client)
+        /*builder.HasOne(e => e.Client)
             .WithMany(e => e.Orders)
             .HasForeignKey(e => e.ClientId)
             .HasPrincipalKey(e => e.Id)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Cascade);*/
     }
 }

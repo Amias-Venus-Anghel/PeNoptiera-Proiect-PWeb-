@@ -11,11 +11,9 @@ namespace MobyLabWebProgramming.Core.DataTransferObjects;
 public class ShoppingCartDTO
 {
     public Guid Id { get; set; }
-
-    public UserDTO Client { get; set; } = default!;
     
     public ICollection<Product> Products { get; set; } = default!;
 
-
+    public Guid ClientId { get; set; }
 }
 

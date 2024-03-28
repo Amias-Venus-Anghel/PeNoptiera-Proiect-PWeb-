@@ -6,20 +6,13 @@ using Ardalis.Specification;
 
 namespace MobyLabWebProgramming.Core.Specifications;
 
-public class ShoppingCartProjectionSpec : BaseSpec<ShoppingCartProjectionSpec, ShoppingCart, ShoppingCartDTO>
+public class ShoppingCartSpec : BaseSpec<ShoppingCartSpec, ShoppingCart>
 {
-    protected override Expression<Func<ShoppingCart, ShoppingCartDTO>> Spec => e => new()
-    {
-        Id = e.Id,
-        Products = e.Products,
-        ClientId = e.ClientId
-    };
-
-    public ShoppingCartProjectionSpec(Guid id) : base(id)
+    public ShoppingCartSpec(Guid id) : base(id)
     {
     }
 
-    public ShoppingCartProjectionSpec(string? search)
+    public ShoppingCartSpec(string? search)
     {
         search = !string.IsNullOrWhiteSpace(search) ? search.Trim() : null;
 

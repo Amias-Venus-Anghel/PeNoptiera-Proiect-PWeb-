@@ -18,20 +18,22 @@ public class UserService : IUserService
     private readonly IRepository<WebAppDatabaseContext> _repository;
     private readonly ILoginService _loginService;
     private readonly IMailService _mailService;
+    private readonly IShoppingCartService _shoppingCartService;
 
     /// <summary>
     /// Inject the required services through the constructor.
     /// </summary>
-    public UserService(IRepository<WebAppDatabaseContext> repository, ILoginService loginService, IMailService mailService)
+    public UserService(IRepository<WebAppDatabaseContext> repository, ILoginService loginService, IMailService mailService, IShoppingCartService shoppingCartService)
     {
         _repository = repository;
         _loginService = loginService;
         _mailService = mailService;
+        _shoppingCartService = shoppingCartService;
     }
 
     public async Task<ServiceResponse<UserDTO>> GetUser(Guid id, CancellationToken cancellationToken = default)
     {
-        var result = await _repository.GetAsync(new UserProjectionSpec(id), cancellationToken); // Get a user using a specification on the repository.
+        var result = await _repository.GetAsync(new UserProjectionSpec(id), cancellationToken); // Get a user using a specification on the repository
 
         return result != null ? 
             ServiceResponse<UserDTO>.ForSuccess(result) : 
@@ -96,8 +98,15 @@ public class UserService : IUserService
             Email = user.Email,
             Name = user.Name,
             Role = user.Role,
-            Password = user.Password
+            Password = user.Password,
         }, cancellationToken); // A new entity is created and persisted in the database.
+
+        result = await _repository.GetAsync(new UserSpec(user.Email), cancellationToken);
+
+        if (result != null)
+        {
+            await _shoppingCartService.CreateShoppingCart(result.Id, cancellationToken);
+        }
 
         await _mailService.SendMail(user.Email, "Welcome!", MailTemplates.UserAddTemplate(user.Name), true, "My App", cancellationToken); // You can send a notification on the user email. Change the email if you want.
 
