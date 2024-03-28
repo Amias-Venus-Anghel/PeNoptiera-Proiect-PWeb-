@@ -25,6 +25,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(e => e.Price)
             .HasPrecision(2)
             .IsRequired();
+        builder.Property(e => e.ProductType)
+            .HasMaxLength(255)
+            .IsRequired();
+        builder.Property(e => e.ProducerId) 
+            .IsRequired();
 
         builder.Property(e => e.CreatedAt)
            .IsRequired();

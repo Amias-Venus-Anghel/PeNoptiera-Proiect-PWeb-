@@ -19,14 +19,16 @@ public class ProductProjectionSpec : BaseSpec<ProductProjectionSpec, Product, Pr
         Name = e.Name,
         Description = e.Description,
         Price = e.Price,
+        ProductType = e.ProductType,
 
-        Prodcer = new()
+        Producer = new()
         {
             Id = e.Producer.Id,
             Email = e.Producer.Email,
             Name = e.Producer.Name,
             Role = e.Producer.Role
         },
+
         CreatedAt = e.CreatedAt,
         UpdatedAt = e.UpdatedAt
     };
@@ -47,6 +49,7 @@ public class ProductProjectionSpec : BaseSpec<ProductProjectionSpec, Product, Pr
         var searchExpr = $"%{search.Replace(" ", "%")}%";
 
         Query.Where(e => EF.Functions.ILike(e.Name, searchExpr) ||
-                         EF.Functions.ILike(e.Description, searchExpr));
+                         EF.Functions.ILike(e.Description, searchExpr) ||
+                         EF.Functions.ILike(e.ProductType, searchExpr));
     }
 }

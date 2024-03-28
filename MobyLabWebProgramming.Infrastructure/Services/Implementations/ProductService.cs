@@ -9,6 +9,7 @@ using MobyLabWebProgramming.Core.Entities;
 using MobyLabWebProgramming.Core.Enums;
 using System.Net;
 using MobyLabWebProgramming.Infrastructure.Services.Interfaces;
+using System.Diagnostics;
 
 namespace MobyLabWebProgramming.Infrastructure.Services.Implementations;
 
@@ -24,9 +25,9 @@ public class ProductService : IProductService
 
     public async Task<ServiceResponse> AddProduct(ProductAddDTO product, UserDTO requestingUser, CancellationToken cancellationToken = default)
     {
-        if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin && requestingUser.Role != UserRoleEnum.Personnel) // Verify who can add the user, you can change this however you se fit.
+        if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin && requestingUser.Role != UserRoleEnum.Producer) // Verify who can add the user, you can change this however you se fit.
         {
-            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only the admin or a producer can add produc!", ErrorCodes.CannotAdd));
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only the admin or a producer can add products!", ErrorCodes.CannotAdd));
         }
 
         await _repository.AddAsync(new Product
@@ -34,6 +35,7 @@ public class ProductService : IProductService
             Name = product.Name,
             Price = product.Price,
             Description = product.Description,
+            ProductType = product.ProductType,
             ProducerId = requestingUser.Id
 
         }, cancellationToken); // A new entity is created and persisted in the database.
@@ -43,15 +45,22 @@ public class ProductService : IProductService
 
     public async Task<ServiceResponse> DeleteProduct(Guid id, UserDTO? requestingUser = null, CancellationToken cancellationToken = default)
     {
-        var product = await _repository.GetAsync<Product>(id, cancellationToken);
+        var product = await _repository.GetAsync(new ProductProjectionSpec(id), cancellationToken);
+
         if (product == null) {
             return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Product doesn't exist!", ErrorCodes.CannotDelete));
         }
-
+        
         if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin && requestingUser.Id != product.Producer.Id) // Verify who can add the user, you can change this however you se fit.
         {
-            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only the admin or the own producer can delete the product!", ErrorCodes.CannotDelete));
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only the admin or the owner can delete the product!", ErrorCodes.CannotDelete));
         }
+
+        if (requestingUser == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Requesting User is Null!", ErrorCodes.CannotDelete));
+        }
+
 
         await _repository.DeleteAsync<Product>(id, cancellationToken); // Delete the entity.
 
@@ -60,11 +69,11 @@ public class ProductService : IProductService
 
     public async Task<ServiceResponse<ProductDTO>> GetProduct(Guid id, CancellationToken cancellationToken = default)
     {
-        var result = await _repository.GetAsync(new ProductProjectionSpec(id), cancellationToken); // Get a user using a specification on the repository.
+        var result = await _repository.GetAsync(new ProductProjectionSpec(id), cancellationToken);
 
         return result != null ?
             ServiceResponse<ProductDTO>.ForSuccess(result) :
-            ServiceResponse<ProductDTO>.FromError(CommonErrors.UserNotFound); // Pack the result or error into a ServiceResponse.
+            ServiceResponse<ProductDTO>.FromError(new(HttpStatusCode.Forbidden, "Product doesn't exist!", ErrorCodes.EntityNotFound)); // Pack the result or error into a ServiceResponse.
     }
 
     public async Task<ServiceResponse<PagedResponse<ProductDTO>>> GetProducts(PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default)

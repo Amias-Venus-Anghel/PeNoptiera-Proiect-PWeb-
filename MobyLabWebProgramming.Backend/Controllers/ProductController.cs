@@ -62,7 +62,7 @@ public class ProductController : AuthorizedController
         var currentUser = await GetCurrentUser();
 
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _productService.DeleteProduct(id)) :
+            this.FromServiceResponse(await _productService.DeleteProduct(id, currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
     }
 }

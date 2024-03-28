@@ -97,7 +97,7 @@ public class UserController : AuthorizedController // Here we use the Authorized
         var currentUser = await GetCurrentUser();
 
         return currentUser.Result != null ?
-            this.FromServiceResponse(await UserService.DeleteUser(id)) :
+            this.FromServiceResponse(await UserService.DeleteUser(id, currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
     }
 }
