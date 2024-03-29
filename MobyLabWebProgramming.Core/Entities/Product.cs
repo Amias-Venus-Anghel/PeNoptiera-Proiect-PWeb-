@@ -17,4 +17,7 @@ public class Product: BaseEntity
     public Guid ProducerId { get; set; }
 
     public User Producer { get; set; } = default!;
+
+
+    public ICollection<ShoppingCartProduct> InCarts { get; set; } = default!;
 }

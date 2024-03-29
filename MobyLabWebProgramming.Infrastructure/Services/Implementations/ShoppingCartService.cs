@@ -38,35 +38,20 @@ public class ShoppingCartService : IShoppingCartService
         {
             return ServiceResponse<ProductDTO>.FromError(CommonErrors.UserNotFound);
         }
-
-        /*var cart = user.ShoppingCart;
-
-        if (cart == null)
-        {
-            return ServiceResponse<ProductDTO>.FromError(new(HttpStatusCode.Forbidden, "Cart doesn't exist!", ErrorCodes.EntityNotFound));
-        }
-
-        cart.Products.Add(product);
-
-        await _repository.UpdateAsync(user,  cancellationToken);*/
-
       
         var cartSpec = new ShoppingCartSpec(user.Email);
-        var result = await _repository.GetAsync(cartSpec, cancellationToken);
+        var cart = await _repository.GetAsync(cartSpec, cancellationToken);
 
-        if (result == null)
+        if (cart == null)
         {
             return ServiceResponse<ShoppingCartDTO>.FromError(new(HttpStatusCode.Forbidden, "ShoppingCart doesn't exist!", ErrorCodes.EntityNotFound)); // Pack the result or error into a ServiceResponse.
         }
 
-        if (result.Products == null)
+        await _repository.AddAsync(new ShoppingCartProduct
         {
-            result.Products = new List<Product>();
-        }
-
-        result.Products.Add(product);
-
-        await _repository.UpdateAsync(result, cancellationToken);
+            ShoppingCartId = cart.Id, 
+            ProductId = productId
+        }, cancellationToken);
 
         return ServiceResponse.ForSuccess();
 
@@ -116,11 +101,22 @@ public class ShoppingCartService : IShoppingCartService
             return ServiceResponse<ShoppingCartDTO>.FromError(CommonErrors.UserNotFound);
         }
 
-        var cart = user.ShoppingCart;
+        var cart = await _repository.GetAsync(new ShoppingCartProjectionSpec(user.Email), cancellationToken);
 
-        cart.Products.Remove(product);
 
-        await _repository.UpdateAsync(user,  cancellationToken);
+        if (cart == null)
+        {
+            return ServiceResponse<ShoppingCartDTO>.FromError(new(HttpStatusCode.Forbidden, "ShoppingCart doesn't exist!", ErrorCodes.EntityNotFound)); // Pack the result or error into a ServiceResponse.
+        }
+
+        var cartProduct = await _repository.GetAsync(new ShoppingCartProductSpec(cart.Id, product.Id), cancellationToken);
+
+        if (cartProduct == null)
+        {
+            return ServiceResponse<ShoppingCartDTO>.FromError(new(HttpStatusCode.Forbidden, "Product doesn't exist in the cart!", ErrorCodes.EntityNotFound));
+        }
+
+        await _repository.DeleteAsync<ShoppingCartProduct>(cartProduct.Id,  cancellationToken);
 
         return ServiceResponse.ForSuccess();
     }
@@ -129,8 +125,7 @@ public class ShoppingCartService : IShoppingCartService
     {
         await _repository.AddAsync(new ShoppingCart
         {
-            ClientId = requestingUser,
-            Products = new List<Product>()
+            ClientId = requestingUser
 
         }, cancellationToken); // A new entity is created and persisted in the database.
 

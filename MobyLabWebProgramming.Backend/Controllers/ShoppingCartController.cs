@@ -22,6 +22,17 @@ public class ShoppingCartController : AuthorizedController
     }
 
     [Authorize]
+    [HttpGet]
+    public async Task<ActionResult<RequestResponse<ShoppingCartDTO>>> GetCartOfCurrentUser()
+    {
+        var currentUser = await GetCurrentUser();
+
+        return currentUser.Result != null ?
+            this.FromServiceResponse(await _shoppingCartService.GetShoppingCartOfUser(currentUser.Result.Id, currentUser.Result)) :
+            this.ErrorMessageResult<ShoppingCartDTO>(currentUser.Error);
+    }
+
+    [Authorize]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<RequestResponse<ShoppingCartDTO>>> GetById([FromRoute] Guid id) // The FromRoute attribute will bind the id from the route to this parameter.
     {

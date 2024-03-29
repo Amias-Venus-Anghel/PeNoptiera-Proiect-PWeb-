@@ -12,7 +12,7 @@ public class ShoppingCartDTO
 {
     public Guid Id { get; set; }
     
-    public ICollection<Product> Products { get; set; } = default!;
+    public ICollection<ShoppingCartProductDTO> Products { get; set; } = default!;
 
     public Guid ClientId { get; set; }
 }

@@ -11,8 +11,33 @@ public class ShoppingCartProjectionSpec : BaseSpec<ShoppingCartProjectionSpec, S
     protected override Expression<Func<ShoppingCart, ShoppingCartDTO>> Spec => e => new()
     {
         Id = e.Id,
-        Products = e.Products,
-        ClientId = e.ClientId
+        ClientId = e.ClientId,
+
+        Products = e.Products.Select(p => new ShoppingCartProductDTO
+        {
+            Id = p.Id,
+
+            Product = new ProductDTO {
+                Id = p.Product.Id,
+                Name = p.Product.Name,
+                Description = p.Product.Description,
+                Price = p.Product.Price,
+                ProductType = p.Product.ProductType,
+
+                Producer = new()
+                {
+                    Id = p.Product.Producer.Id,
+                    Email = p.Product.Producer.Email,
+                    Name = p.Product.Producer.Name,
+                    Role = p.Product.Producer.Role
+                },
+
+                CreatedAt = p.Product.CreatedAt,
+                UpdatedAt = p.Product.UpdatedAt
+            }
+
+        }).ToList()
+
     };
 
     public ShoppingCartProjectionSpec(Guid id) : base(id)
