@@ -13,7 +13,7 @@ public class ShoppingCartProjectionSpec : BaseSpec<ShoppingCartProjectionSpec, S
         Id = e.Id,
         ClientId = e.ClientId,
 
-        Products = e.Products.Select(p => new ShoppingCartProductDTO
+        Products = e.Products.Select(p => new CartProductDTO
         {
             Id = p.Id,
 

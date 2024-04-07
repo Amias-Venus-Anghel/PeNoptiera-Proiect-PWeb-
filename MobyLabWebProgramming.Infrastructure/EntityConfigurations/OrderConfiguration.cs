@@ -19,11 +19,15 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(e => e.DeliveryAddress)
             .IsRequired();
-        builder.Property(e => e.TotalPrice)
+        builder.Property(e => e.TotalCost)
             .HasPrecision(2)
             .IsRequired();
         builder.Property(e => e.Status)
             .HasMaxLength(255)
+            .IsRequired();
+        builder.Property(e => e.NumberOfItems)
+            .IsRequired();
+        builder.Property(e => e.DeliveryMethod)
             .IsRequired();
 
         builder.Property(e => e.CreatedAt)
@@ -31,11 +35,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(e => e.UpdatedAt)
             .IsRequired();
 
-        /*builder.HasOne(e => e.Client)
+        builder.HasOne(e => e.Client)
             .WithMany(e => e.Orders)
             .HasForeignKey(e => e.ClientId)
             .HasPrincipalKey(e => e.Id)
             .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);*/
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

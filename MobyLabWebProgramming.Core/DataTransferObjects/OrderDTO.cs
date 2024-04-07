@@ -16,10 +16,10 @@ public class OrderDTO
     public UserDTO Client { get; set; } = default!;
 
     public string DeliveryAddress { get; set; }
-    public float TotalPrice { get; set; }
+    public float TotalCost { get; set; }
+    public int NumberOfItems { get; set; }
     public OrderStatusEnum Status { get; set; }
-
-    public ICollection<Product> Products { get; set; } = default!;
+    public OrderDeliveryEnum DeliveryMethod { get; set; }
 
 
     public DateTime CreatedAt { get; set; }

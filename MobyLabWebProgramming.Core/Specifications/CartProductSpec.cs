@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace MobyLabWebProgramming.Core.Specifications
 {
-    public class ShoppingCartProductSpec: BaseSpec<ShoppingCartProductSpec, ShoppingCartProduct>
+    public class CartProductSpec: BaseSpec<CartProductSpec, CartProduct>
     {
-        public ShoppingCartProductSpec(Guid shoppingCartId, Guid productId)
+        public CartProductSpec(Guid shoppingCartId, Guid productId)
         {
             Query.Where(e => e.ShoppingCartId == shoppingCartId && e.ProductId == productId);
         }
 
-        public ShoppingCartProductSpec(string? search)
+        public CartProductSpec(string? search)
         {
             search = !string.IsNullOrWhiteSpace(search) ? search.Trim() : null;
 

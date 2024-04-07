@@ -12,5 +12,5 @@ public class ShoppingCart : BaseEntity
     public Guid ClientId { get; set; }
 
     public User Client { get; set; } = default!;
-    public ICollection<ShoppingCartProduct> Products { get; set; } = default!;
+    public ICollection<CartProduct> Products { get; set; } = default!;
 }

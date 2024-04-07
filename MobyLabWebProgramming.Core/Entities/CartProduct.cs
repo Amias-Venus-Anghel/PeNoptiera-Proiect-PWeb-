@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MobyLabWebProgramming.Core.Entities;
 
-public class ShoppingCartProduct : BaseEntity
+public class CartProduct : BaseEntity
 {
     public Guid ShoppingCartId { get; set; }
     public ShoppingCart ShoppingCart { get; set; } = default!;

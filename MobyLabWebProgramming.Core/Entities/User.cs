@@ -23,6 +23,6 @@ public class User : BaseEntity
     public ICollection<UserFile> UserFiles { get; set; } = default!;
     // Producer products
     public ICollection<Product> Products { get; set; } = default!;
-   // public ICollection<Order> Orders { get; set; } = default!;
+    public ICollection<Order> Orders { get; set; } = default!;
 }
 

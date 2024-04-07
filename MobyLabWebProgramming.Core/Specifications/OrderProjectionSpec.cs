@@ -11,10 +11,11 @@ public class OrderProjectionSpec : BaseSpec<OrderProjectionSpec, Order, OrderDTO
     protected override Expression<Func<Order, OrderDTO>> Spec => e => new()
     {
         Id = e.Id,
-        TotalPrice = e.TotalPrice,
+        TotalCost = e.TotalCost,
         DeliveryAddress = e.DeliveryAddress,
+        DeliveryMethod = e.DeliveryMethod,
         Status = e.Status,
-        Products = e.Products,
+        NumberOfItems = e.NumberOfItems,
 
         Client = new()
         {

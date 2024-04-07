@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MobyLabWebProgramming.Infrastructure.EntityConfigurations;
-public class ShoppingCartProductConfiguration
+public class CartProductConfiguration
 {
-    public void Configure(EntityTypeBuilder<ShoppingCartProduct> builder)
+    public void Configure(EntityTypeBuilder<CartProduct> builder)
     {
         builder.Property(e => e.Id)
             .IsRequired();

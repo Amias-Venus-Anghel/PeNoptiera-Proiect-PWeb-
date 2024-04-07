@@ -10,11 +10,12 @@ namespace MobyLabWebProgramming.Core.Entities;
 public class Order : BaseEntity
 {
     public string DeliveryAddress { get; set; } = default!;
-    public float TotalPrice { get; set; } = default!;
+    public float TotalCost { get; set; } = default!;
+    public int NumberOfItems { get; set; } = default!;
+    public OrderDeliveryEnum DeliveryMethod { get; set; } = default!;
     public OrderStatusEnum Status { get; set; } = default!;
 
     public Guid ClientId { get; set; }
 
     public User Client { get; set; } = default!;
-    public ICollection<Product> Products { get; set; } = default!;
 }
