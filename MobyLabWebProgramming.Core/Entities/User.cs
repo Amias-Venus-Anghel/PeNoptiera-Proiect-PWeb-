@@ -24,5 +24,6 @@ public class User : BaseEntity
     // Producer products
     public ICollection<Product> Products { get; set; } = default!;
     public ICollection<Order> Orders { get; set; } = default!;
+    public ICollection<Form> Forms { get; set; } = default!;
 }
 
