@@ -21,7 +21,7 @@ public class FormController : AuthorizedController
         _formService = formService;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<RequestResponse<FormDTO>>> GetById([FromRoute] Guid id) // The FromRoute attribute will bind the id from the route to this parameter.
     {
@@ -32,7 +32,7 @@ public class FormController : AuthorizedController
             this.ErrorMessageResult<FormDTO>(currentUser.Error);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpGet] // This attribute will make the controller respond to a HTTP GET request on the route /api/User/GetPage.
     public async Task<ActionResult<RequestResponse<PagedResponse<FormDTO>>>> GetPage([FromQuery] PaginationSearchQueryParams pagination) // The FromQuery attribute will bind the parameters matching the names of
                                                                                                                                             // the PaginationSearchQueryParams properties to the object in the method parameter.
@@ -55,7 +55,7 @@ public class FormController : AuthorizedController
             this.ErrorMessageResult(currentUser.Error);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:guid}")] // This attribute will make the controller respond to a HTTP DELETE request on the route /api/User/Delete/<some_guid>.
     public async Task<ActionResult<RequestResponse>> Delete([FromRoute] Guid id) // The FromRoute attribute will bind the id from the route to this parameter.
     {

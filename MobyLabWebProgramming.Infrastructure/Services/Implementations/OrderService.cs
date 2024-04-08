@@ -91,7 +91,7 @@ public class OrderService : IOrderService
     {
         if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin &&  requestingUser.Email != pagination.Search)
         {
-            return ServiceResponse<PagedResponse<OrderDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only the admin can view orders!", ErrorCodes.AccessDenied));
+            return ServiceResponse<PagedResponse<OrderDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only the admin or own client can view orders!", ErrorCodes.AccessDenied));
         }
 
         var result = await _repository.PageAsync(pagination, new OrderProjectionSpec(pagination.Search), cancellationToken);

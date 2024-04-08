@@ -29,7 +29,7 @@ public class LoginService : ILoginService
             {
                 { ClaimTypes.Name, user.Name },
                 { ClaimTypes.Email, user.Email },
-                { ClaimTypes.Role, user.Role } // added user role in token
+                { ClaimTypes.Role, user.Role.Value } // added user role in token
 
             },
             IssuedAt = issuedAt, // This sets the "iat" claim to indicate then the JWT was emitted.

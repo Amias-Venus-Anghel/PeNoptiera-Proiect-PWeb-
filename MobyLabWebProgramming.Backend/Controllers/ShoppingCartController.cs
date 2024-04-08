@@ -54,7 +54,7 @@ public class ShoppingCartController : AuthorizedController
             this.ErrorMessageResult<ShoppingCartDTO>(currentUser.Error);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpGet] // This attribute will make the controller respond to a HTTP GET request on the route /api/User/GetPage.
     public async Task<ActionResult<RequestResponse<PagedResponse<ShoppingCartDTO>>>> GetPage([FromQuery] PaginationSearchQueryParams pagination) // The FromQuery attribute will bind the parameters matching the names of
                                                                                                                                            // the PaginationSearchQueryParams properties to the object in the method parameter.
