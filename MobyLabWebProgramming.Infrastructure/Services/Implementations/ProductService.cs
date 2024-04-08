@@ -82,4 +82,27 @@ public class ProductService : IProductService
 
         return ServiceResponse<PagedResponse<ProductDTO>>.ForSuccess(result);
     }
+
+    public async Task<ServiceResponse> UpdateProduct(ProductUpdateDTO product, UserDTO? requestingUser = default, CancellationToken cancellationToken = default)
+    {
+        var _product = await _repository.GetAsync(new ProductSpec(product.Id), cancellationToken);
+
+        if (product == null) {
+            ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Product doesn't exist!", ErrorCodes.EntityNotFound));
+        }
+
+        if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin && requestingUser.Id != _product.ProducerId) // Verify who can add the user, you can change this however you se fit.
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only the admin or the producer can update the product!", ErrorCodes.CannotUpdate));
+        }
+
+        _product.Name = product.Name;
+        _product.Description = product.Description;
+        _product.Price = product.Price;
+        _product.ProductType = product.ProductType;
+
+        await _repository.UpdateAsync(_product);
+
+        return ServiceResponse.ForSuccess();
+    }
 }

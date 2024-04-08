@@ -56,6 +56,17 @@ public class OrderController : AuthorizedController
     }
 
     [Authorize]
+    [HttpPut]
+    public async Task<ActionResult<RequestResponse>> UpdateOrder([FromBody] OrderUpdateDTO orderDetails)
+    {
+        var currentUser = await GetCurrentUser();
+
+        return currentUser.Result != null ?
+            this.FromServiceResponse(await _orderService.UpdateOrder(orderDetails, currentUser.Result)) :
+            this.ErrorMessageResult(currentUser.Error);
+    }
+
+    [Authorize]
     [HttpDelete("{id:guid}")] 
     public async Task<ActionResult<RequestResponse>> Delete([FromRoute] Guid id)
     {
@@ -63,17 +74,6 @@ public class OrderController : AuthorizedController
 
         return currentUser.Result != null ?
             this.FromServiceResponse(await _orderService.DeleteOrder(id, currentUser.Result)) :
-            this.ErrorMessageResult(currentUser.Error);
-    }
-
-    [Authorize]
-    [HttpPost]
-    public async Task<ActionResult<RequestResponse>> UpdateOrder([FromBody] OrderUpdateDTO orderDetails)
-    {
-        var currentUser = await GetCurrentUser();
-
-        return currentUser.Result != null ?
-            this.FromServiceResponse(await _orderService.UpdateOrder(orderDetails, currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
     }
 }
