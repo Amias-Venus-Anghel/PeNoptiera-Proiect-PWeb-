@@ -55,7 +55,7 @@ public class OrderController : AuthorizedController
             this.ErrorMessageResult(currentUser.Error);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpPut]
     public async Task<ActionResult<RequestResponse>> UpdateOrder([FromBody] OrderUpdateDTO orderDetails)
     {

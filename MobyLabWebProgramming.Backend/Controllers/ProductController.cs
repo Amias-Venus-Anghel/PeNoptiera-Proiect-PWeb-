@@ -44,7 +44,7 @@ public class ProductController : AuthorizedController
             this.ErrorMessageResult<PagedResponse<ProductDTO>>(currentUser.Error);
     }
 
-    [Authorize(Roles = "Admin, Producer")]
+    [Authorize]
     [HttpPost] // This attribute will make the controller respond to a HTTP POST request on the route /api/User/Add.
     public async Task<ActionResult<RequestResponse>> Add([FromBody] ProductAddDTO product)
     {
@@ -55,7 +55,7 @@ public class ProductController : AuthorizedController
             this.ErrorMessageResult(currentUser.Error);
     }
 
-    [Authorize(Roles = "Admin, Producer")]
+    [Authorize]
     [HttpPut]
     public async Task<ActionResult<RequestResponse>> Update([FromBody] ProductUpdateDTO product)
     {
@@ -66,7 +66,7 @@ public class ProductController : AuthorizedController
             this.ErrorMessageResult(currentUser.Error);
     }
 
-    [Authorize(Roles = "Admin, Producer")]
+    [Authorize]
     [HttpDelete("{id:guid}")] // This attribute will make the controller respond to a HTTP DELETE request on the route /api/User/Delete/<some_guid>.
     public async Task<ActionResult<RequestResponse>> Delete([FromRoute] Guid id) // The FromRoute attribute will bind the id from the route to this parameter.
     {
