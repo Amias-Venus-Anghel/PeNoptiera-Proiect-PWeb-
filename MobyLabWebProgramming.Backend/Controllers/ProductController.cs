@@ -45,6 +45,18 @@ public class ProductController : AuthorizedController
     }
 
     [Authorize]
+    [HttpGet] // This attribute will make the controller respond to a HTTP GET request on the route /api/User/GetPage.
+    public async Task<ActionResult<RequestResponse<PagedResponse<ProductDTO>>>> GetProductsOfUser([FromQuery] PaginationSearchQueryParams pagination) // The FromQuery attribute will bind the parameters matching the names of
+                                                                                                                                            // the PaginationSearchQueryParams properties to the object in the method parameter.
+    {
+        var currentUser = await GetCurrentUser();
+
+        return currentUser.Result != null ?
+            this.FromServiceResponse(await _productService.GetProductsOfUser(pagination, currentUser.Result)) :
+            this.ErrorMessageResult<PagedResponse<ProductDTO>>(currentUser.Error);
+    }
+
+    [Authorize]
     [HttpPost] // This attribute will make the controller respond to a HTTP POST request on the route /api/User/Add.
     public async Task<ActionResult<RequestResponse>> Add([FromBody] ProductAddDTO product)
     {

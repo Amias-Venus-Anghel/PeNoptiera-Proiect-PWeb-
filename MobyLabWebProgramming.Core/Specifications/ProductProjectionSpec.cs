@@ -32,8 +32,13 @@ public class ProductProjectionSpec : BaseSpec<ProductProjectionSpec, Product, Pr
     {
     }
 
-    public ProductProjectionSpec(string? search)
+    public ProductProjectionSpec(string? search, Guid? producerId)
     {
+        if (producerId != null)
+        {
+            Query.Where(e => e.Producer.Id == producerId);
+        }
+
         search = !string.IsNullOrWhiteSpace(search) ? search.Trim() : null;
 
         if (search == null)
@@ -47,4 +52,5 @@ public class ProductProjectionSpec : BaseSpec<ProductProjectionSpec, Product, Pr
                          EF.Functions.ILike(e.Description, searchExpr) ||
                          EF.Functions.ILike(e.ProductType, searchExpr));
     }
+
 }

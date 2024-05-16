@@ -78,7 +78,14 @@ public class ProductService : IProductService
 
     public async Task<ServiceResponse<PagedResponse<ProductDTO>>> GetProducts(PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default)
     {
-        var result = await _repository.PageAsync(pagination, new ProductProjectionSpec(pagination.Search), cancellationToken); // Use the specification and pagination API to get only some entities from the database.
+        var result = await _repository.PageAsync(pagination, new ProductProjectionSpec(pagination.Search, null), cancellationToken); // Use the specification and pagination API to get only some entities from the database.
+
+        return ServiceResponse<PagedResponse<ProductDTO>>.ForSuccess(result);
+    }
+
+    public async Task<ServiceResponse<PagedResponse<ProductDTO>>> GetProductsOfUser(PaginationSearchQueryParams pagination, UserDTO requestingUser, CancellationToken cancellationToken = default)
+    {
+        var result = await _repository.PageAsync(pagination, new ProductProjectionSpec(pagination.Search, requestingUser.Id), cancellationToken); // Use the specification and pagination API to get only some entities from the database.
 
         return ServiceResponse<PagedResponse<ProductDTO>>.ForSuccess(result);
     }
