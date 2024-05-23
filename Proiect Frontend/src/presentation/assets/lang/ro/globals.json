@@ -40,5 +40,6 @@
     "globals.contact": "Contact",
     "globals.shoppingcart": "Cos de Cumparaturi",
     "global.courier": "Prin Curier",
-    "global.post": "Prin Posta"
+    "global.post": "Prin Posta",
+    "globals.passwordConfirmation": "Confirmare Parola"
 }

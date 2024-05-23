@@ -40,5 +40,6 @@
     "globals.contact": "Contact",
     "globals.shoppingcart": "Shopping Cart",
     "global.courier": "By Courier",
-    "global.post": "By Post"
+    "global.post": "By Post",
+    "globals.passwordConfirmation": "Confirm Password"
 }

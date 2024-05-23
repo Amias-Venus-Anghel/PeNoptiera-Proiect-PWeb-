@@ -15,5 +15,6 @@
     "notifications.errors.wrongPassword": "Ați introdus o parolă greșită!",
     "notifications.errors.feedbackSentSuccess": "Formularul a fost trimis cu success!",
     "notifications.errors.addedToCartSuccess": "Produs adaugat in cos!",
-    "notifications.messages.orderPlacedSuccess": "Comanda a fost plasata cu succes!"
+    "notifications.messages.orderPlacedSuccess": "Comanda a fost plasata cu succes!",
+    "notifications.messages.passworddontmatch": "Parolele trebuie sa fie identice!"
 }

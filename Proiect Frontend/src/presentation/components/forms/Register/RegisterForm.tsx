@@ -112,6 +112,32 @@ export const RegisterForm = (props: { onSubmit?: () => void }) => {
                     <Grid container item direction="column" xs={6} md={6}>
                         <FormControl
                             fullWidth
+                        >
+                            <FormLabel required>
+                                <FormattedMessage id="globals.passwordConfirmation" />
+                            </FormLabel>
+                            <OutlinedInput
+                                type="password"
+                                onChange={(event) => actions.setPassConfirm(event.target.value)}
+                                placeholder={formatMessage(
+                                    { id: "globals.placeholders.textInput" },
+                                    {
+                                        fieldName: formatMessage({
+                                            id: "globals.passwordConfirmation",
+                                        }),
+                                    })}
+                                autoComplete="none"
+                            />
+                            <FormHelperText
+                                hidden={isUndefined("")}
+                            >
+                                {"confirm"}
+                            </FormHelperText>
+                        </FormControl>
+                    </Grid>
+                    <Grid container item direction="column" xs={6} md={6}>
+                        <FormControl
+                            fullWidth
                             error={!isUndefined(state.errors.role)}
                         >
                             <FormLabel required>

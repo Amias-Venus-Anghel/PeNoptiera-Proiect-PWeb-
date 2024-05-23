@@ -26,6 +26,7 @@ export type UserAddFormActions = {
     handleSubmit: UseFormHandleSubmit<RegisterFormModel>;
     submit: (body: RegisterFormModel) => void;
     selectRole: (value: SelectChangeEvent<UserRoleEnum>) => void;
+    setPassConfirm: (value: string) => void; 
 };
 export type UserAddFormComputed = {
     defaultValues: RegisterFormModel,

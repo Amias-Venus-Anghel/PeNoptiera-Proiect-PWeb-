@@ -15,5 +15,6 @@
     "notifications.errors.wrongPassword": "You entered the wrong password!",
     "notifications.errors.feedbackSentSuccess": "The form has been sent successfully!",
     "notifications.errors.addedToCartSuccess": "Product added to cart!",
-    "notifications.messages.orderPlacedSuccess": "Order was placed successfully!"
+    "notifications.messages.orderPlacedSuccess": "Order was placed successfully!",
+    "notifications.messages.passworddontmatch": "Passwords must match!"
 }

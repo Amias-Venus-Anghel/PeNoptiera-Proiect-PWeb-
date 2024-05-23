@@ -5,7 +5,7 @@ import { isUndefined } from "lodash";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLoginApi, useUserApi } from "@infrastructure/apis/api-management";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { UserRoleEnum } from "@infrastructure/apis/client";
 import { SelectChangeEvent } from "@mui/material";
 import { RegisterFormController, RegisterFormModel } from "./RegisterForm.types";
@@ -107,6 +107,9 @@ export const useRegisterFormController = (onSubmit?: () => void): RegisterFormCo
         mutationKey: [mutationKey], 
         mutationFn: mutation
     });
+
+    const [passConfirm, setPassConfirm] = useState<string>("");
+
     const queryClient = useQueryClient();
 
     const dispatch = useAppDispatch();
@@ -120,7 +123,8 @@ export const useRegisterFormController = (onSubmit?: () => void): RegisterFormCo
         });
     }, [loginMutation, dispatch, redirectToHome, formatMessage]);
 
-    const submit = useCallback((data: RegisterFormModel) => // Create a submit callback to send the form data to the backend.
+    const submit = useCallback((data: RegisterFormModel ) => // Create a submit callback to send the form data to the backend.
+        data.password == passConfirm ? 
         add(data).then(() => {
             queryClient.invalidateQueries({ queryKey: [queryKey] }); // If the form submission succeeds then some other queries need to be refresh so invalidate them to do a refresh.
             
@@ -129,7 +133,9 @@ export const useRegisterFormController = (onSubmit?: () => void): RegisterFormCo
             if (onSubmit) {
                 onSubmit();
             }
-        }), [add, queryClient, queryKey, login, onSubmit]);
+        }) : 
+        toast(formatMessage({ id: "notifications.messages.passworddontmatch" }))
+        , [add, queryClient, queryKey, login, onSubmit]);
 
     const {
         register,
@@ -154,7 +160,8 @@ export const useRegisterFormController = (onSubmit?: () => void): RegisterFormCo
             submit, // Add the submit handle that needs to be passed to the submit handle.
             register, // Add the variable register to bind the form fields in the UI with the form variables.
             watch, // Add a watch on the variables, this function can be used to watch changes on variables if it is needed in some locations.
-            selectRole
+            selectRole,
+            setPassConfirm
         },
         computed: {
             defaultValues,
